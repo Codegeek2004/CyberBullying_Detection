@@ -37,6 +37,5 @@ def index():
     return render_template('index.html', result=result, text_input=user_input)
 
 if __name__ == '__main__':
-    # Set port to 10000 for Render
-    port = int(os.environ.get('PORT', 10000))  
-    app.run(host='0.0.0.0', port=port)  # Make the app accessible from outside
+    # Enable debugging to get detailed error logs
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
