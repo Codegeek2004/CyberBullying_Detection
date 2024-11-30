@@ -1,20 +1,6 @@
 import nltk
 import os
 from flask import Flask, render_template, request
-import tensorflow as tf
-
-# List available GPUs
-gpus = tf.config.experimental.list_physical_devices('GPU')
-if gpus:
-    try:
-        # Disable all GPUs
-        tf.config.set_visible_devices([], 'GPU')
-        print("No GPU will be used.")
-    except RuntimeError as e:
-        print(e)
-else:
-    print("No GPU devices found, using CPU.")
-
 
 # Set the path for NLTK data to be stored in the project directory (or another desired location)
 nltk_data_path = './nltk_data'
