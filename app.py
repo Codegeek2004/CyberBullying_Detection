@@ -1,25 +1,24 @@
-import os
 import nltk
-from flask import Flask, render_template, request
-from utils.text_prediction_rnn import predict_cyberbullying
+import os
 
-# Ensure the necessary NLTK data is downloaded only if not already present
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt')
-
+# Ensure NLTK resources are downloaded on Render (this will also handle the missing resources)
+nltk.data.path.append('./nltk_data')  # Set a path for nltk data to be stored locally
 try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
-    nltk.download('stopwords')
-
+    nltk.download('stopwords', download_dir='./nltk_data')  # Download stopwords if not found
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt', download_dir='./nltk_data')  # Download punkt if not found
 try:
     nltk.data.find('corpora/wordnet')
 except LookupError:
-    nltk.download('wordnet')
+    nltk.download('wordnet', download_dir='./nltk_data')  # Download wordnet if not found
 
-# Initialize Flask app
+from flask import Flask, render_template, request
+from utils.text_prediction_rnn import predict_cyberbullying
+
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
@@ -28,22 +27,16 @@ def index():
     user_input = None
 
     if request.method == 'POST':
-        # Get user input from the form
-        user_input = request.form.get('text', '')
+        # Get the user input from the form
+        user_input = request.form['text']
+        
+        # Call the prediction function from the text_prediction_rnn module
+        result = predict_cyberbullying(user_input)
 
-        if user_input:
-            # Call the prediction function
-            try:
-                result = predict_cyberbullying(user_input)
-            except Exception as e:
-                # Log or handle any errors in prediction
-                result = f"Error during prediction: {str(e)}"
-
-    # Render the HTML template with the result
+    # Render the index page with or without the result
     return render_template('index.html', result=result, text_input=user_input)
 
 if __name__ == '__main__':
-    # Get the PORT from environment variables, default to 10000
-    port = int(os.environ.get('PORT', 10000))
-    # Run the Flask app, bind to all available IPs
-    app.run(host='0.0.0.0', port=port)
+    # Set port to 10000 for Render
+    port = int(os.environ.get('PORT', 10000))  
+    app.run(host='0.0.0.0', port=port)  # Make the app accessible from outside
