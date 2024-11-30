@@ -1,11 +1,17 @@
-import nltk
 import os
-# Download necessary NLTK packages
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('punkt')
+import nltk
 from flask import Flask, render_template, request
 from utils.text_prediction_rnn import predict_cyberbullying
+
+# Ensure the necessary NLTK data is downloaded only once
+try:
+    nltk.data.find('tokenizers/punkt')
+    nltk.data.find('corpora/stopwords')
+    nltk.data.find('corpora/wordnet')
+except LookupError:
+    nltk.download('punkt')
+    nltk.download('stopwords')
+    nltk.download('wordnet')
 
 app = Flask(__name__)
 
@@ -23,7 +29,6 @@ def index():
 
     # Render the index page with or without the result
     return render_template('index.html', result=result, text_input=user_input)
-
 
 if __name__ == '__main__':
     # Delay the browser opening slightly to ensure the server is running
