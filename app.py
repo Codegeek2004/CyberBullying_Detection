@@ -39,7 +39,7 @@ def index():
         user_input = request.form['text']
         
         # Call the prediction function (replace with actual function call)
-        from utils.text_prediction_rnn import predict_cyberbullying
+        from utils.text_prediction_lstm import predict_cyberbullying
         result = predict_cyberbullying(user_input)
 
     # Render the index page with or without the result
