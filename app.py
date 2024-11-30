@@ -32,5 +32,5 @@ def index():
 
 if __name__ == '__main__':
     # Delay the browser opening slightly to ensure the server is running
-    port = int(os.environ.get('PORT', 8080))  # Use the 'PORT' env variable if set
+    port = int(os.environ.get('PORT', 10000))  # Use the 'PORT' env variable if set
     app.run(host='0.0.0.0', port=port)
