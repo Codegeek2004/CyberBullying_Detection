@@ -1,4 +1,5 @@
 import nltk
+import os
 # Download necessary NLTK packages
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -26,4 +27,5 @@ def index():
 
 if __name__ == '__main__':
     # Delay the browser opening slightly to ensure the server is running
-    app.run(debug=False)
+    port = int(os.environ.get('PORT', 8080))  # Use the 'PORT' env variable if set
+    app.run(host='0.0.0.0', port=port)
