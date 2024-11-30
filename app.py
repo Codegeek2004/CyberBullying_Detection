@@ -3,16 +3,23 @@ import nltk
 from flask import Flask, render_template, request
 from utils.text_prediction_rnn import predict_cyberbullying
 
-# Ensure the necessary NLTK data is downloaded only once
+# Ensure the necessary NLTK data is downloaded only if not already present
 try:
     nltk.data.find('tokenizers/punkt')
-    nltk.data.find('corpora/stopwords')
-    nltk.data.find('corpora/wordnet')
 except LookupError:
     nltk.download('punkt')
+
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
     nltk.download('stopwords')
+
+try:
+    nltk.data.find('corpora/wordnet')
+except LookupError:
     nltk.download('wordnet')
 
+# Initialize Flask app
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
@@ -21,16 +28,22 @@ def index():
     user_input = None
 
     if request.method == 'POST':
-        # Get the user input from the form
-        user_input = request.form['text']
-        
-        # Call the prediction function from the text_prediction_rnn module
-        result = predict_cyberbullying(user_input)
+        # Get user input from the form
+        user_input = request.form.get('text', '')
 
-    # Render the index page with or without the result
+        if user_input:
+            # Call the prediction function
+            try:
+                result = predict_cyberbullying(user_input)
+            except Exception as e:
+                # Log or handle any errors in prediction
+                result = f"Error during prediction: {str(e)}"
+
+    # Render the HTML template with the result
     return render_template('index.html', result=result, text_input=user_input)
 
 if __name__ == '__main__':
-    # Delay the browser opening slightly to ensure the server is running
-    port = int(os.environ.get('PORT', 10000))  # Use the 'PORT' env variable if set
+    # Get the PORT from environment variables, default to 10000
+    port = int(os.environ.get('PORT', 10000))
+    # Run the Flask app, bind to all available IPs
     app.run(host='0.0.0.0', port=port)
