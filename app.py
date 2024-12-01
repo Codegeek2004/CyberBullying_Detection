@@ -1,11 +1,16 @@
+import logging
 import nltk
 import os
 from flask import Flask, render_template, request
 
-# Disable GPU usage if no GPU is available
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# Set up logging to capture errors
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
-# Set the path for NLTK data to be stored in the project directory
+# Disable GPU usage
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Disable GPU usage
+
+# Set the path for NLTK data to be stored in the project directory (or another desired location) 
 nltk_data_path = './nltk_data'
 nltk.data.path.append(nltk_data_path)
 
@@ -38,19 +43,22 @@ def index():
     user_input = None
 
     if request.method == 'POST':
-        # Get the user input from the form
-        user_input = request.form['text']
-        
-        # Call the prediction function (replace with actual function call)
         try:
+            # Get the user input from the form
+            user_input = request.form['text']
+            logger.debug(f"User input received: {user_input}")
+
+            # Call the prediction function (replace with actual function call)
             from utils.text_prediction_rnn import predict_cyberbullying
             result = predict_cyberbullying(user_input)
-        except Exception as e:
-            print(f"Error during prediction: {e}")
-            result = "Error in prediction"
 
-    # Render the index page with or without the result
+            logger.debug(f"Prediction result: {result}")
+        except Exception as e:
+            logger.error(f"Error occurred: {e}")
+            result = f"Error: {e}"
+
     return render_template('index.html', result=result, text_input=user_input)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
+    # Enable debugging for detailed error logs
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 10000)), use_reloader=True)
