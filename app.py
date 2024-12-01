@@ -2,10 +2,10 @@ import nltk
 import os
 from flask import Flask, render_template, request
 
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Disable GPU usage
+# Disable GPU usage if no GPU is available
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-# Set the path for NLTK data to be stored in the project directory (or another desired location) 
+# Set the path for NLTK data to be stored in the project directory
 nltk_data_path = './nltk_data'
 nltk.data.path.append(nltk_data_path)
 
@@ -42,12 +42,15 @@ def index():
         user_input = request.form['text']
         
         # Call the prediction function (replace with actual function call)
-        from utils.text_prediction_rnn import predict_cyberbullying
-        result = predict_cyberbullying(user_input)
+        try:
+            from utils.text_prediction_rnn import predict_cyberbullying
+            result = predict_cyberbullying(user_input)
+        except Exception as e:
+            print(f"Error during prediction: {e}")
+            result = "Error in prediction"
 
     # Render the index page with or without the result
     return render_template('index.html', result=result, text_input=user_input)
 
 if __name__ == '__main__':
-    # Enable debugging for detailed error logs
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
