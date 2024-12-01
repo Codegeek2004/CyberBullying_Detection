@@ -2,7 +2,10 @@ import nltk
 import os
 from flask import Flask, render_template, request
 
-# Set the path for NLTK data to be stored in the project directory (or another desired location)
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Disable GPU usage
+
+# Set the path for NLTK data to be stored in the project directory (or another desired location) 
 nltk_data_path = './nltk_data'
 nltk.data.path.append(nltk_data_path)
 
