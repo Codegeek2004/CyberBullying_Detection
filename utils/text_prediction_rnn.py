@@ -36,8 +36,8 @@ except LookupError:
 
 # Load the model and tokenizer
 try:
-    model_path = os.path.join('models', 'rnn_model.keras')
-    tokenizer_path = os.path.join('models', 'tokenizer_rnn.pkl')
+    model_path = 'models\\rnn_model.keras'
+    tokenizer_path = "models\\tokenizer.pkl"
     
     model = load_model(model_path)
     with open(tokenizer_path, 'rb') as f:

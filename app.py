@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # Disable GPU usage
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Disable GPU usage
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # Disable GPU usage
 
 # Set the path for NLTK data to be stored in the project directory (or another desired location) 
 nltk_data_path = './nltk_data'
