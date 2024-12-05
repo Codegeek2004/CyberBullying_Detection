@@ -3,71 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comment Classification</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
+    <title>Cyberbullying Detection</title>
+    <!-- Link to styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
-<body>
+<body class="{% if result == 'Cyberbullying' %}cyberbullying{% elif result == 'Not Cyberbullying' %}non-cyberbullying{% endif %}">
     <div class="container">
-        <h1>Comment Classification</h1>
-        <form id="classify-form">
-            <label for="comment">Enter a Comment:</label>
-            <input type="text" id="comment" name="comment" required>
-            <button type="submit">Classify</button>
+        <!-- Heading (always visible) -->
+        <h1 class="title">Cyberbullying Detection</h1>
+    
+        <!-- Form for text input -->
+        <form id="predictionForm" method="POST" action="{{ url_for('index') }}" class="form">
+            <label for="text" class="label">Enter Text:</label>
+            <input type="text" id="text" name="text" value="{{ text_input if text_input else '' }}" class="input-field" required>
+            <button type="submit" class="submit-btn">Predict</button>
         </form>
-
-        <div id="result-container">
-            <h2>Result:</h2>
-            <p class="result" id="classification"></p>
-        </div>
-
-        <p id="error-message" class="error"></p>
+    
+        <!-- Prediction Result Heading (always visible) -->
+        <h2 class="result-heading">Prediction Result</h2>
+    
+        <!-- Text result (initially empty) -->
+        <p class="result" id="resultText">No prediction available yet. Enter text and click Predict.</p>
     </div>
-
+    
     <script>
-        document.getElementById("classify-form").addEventListener("submit", function (e) {
-            e.preventDefault(); // Prevent the form from submitting normally
-
-            const comment = document.getElementById("comment").value;
-
-            // Clear any previous error messages
-            document.getElementById("error-message").innerText = "";
-
-            // Send POST request to Flask
-            fetch("/predict", {  // Flask's /predict route
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ comment: comment }), // Send the comment in JSON format
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Failed to classify the comment.");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    // Display the classification result
-                    const classificationElement = document.getElementById("classification");
-
-                    classificationElement.innerText = `${data["Classification"]}`;
-
-                    // Change color based on classification
-                    if (data["Classification"] === "Cyberbullying") {
-                        classificationElement.className = "result red";
-                    } else {
-                        classificationElement.className = "result green";
-                    }
-
-                    // Show the result container
-                    document.getElementById("result-container").style.display = "block";
-                })
-                .catch((error) => {
-                    // Handle errors
-                    console.error("Error:", error);
-                    document.getElementById("error-message").innerText = "An error occurred while classifying the comment. Please try again.";
-                });
+        // Wait for the page to fully load
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.querySelector(".container");
+            const resultText = document.getElementById("resultText");
+    
+            // Simulate model processing (replace this setTimeout with actual model logic)
+            setTimeout(() => {
+                // Replace `result` with actual data from the backend or prediction logic
+                const result = "{{ result }}"; // Example: 'Cyberbullying' or 'Not Cyberbullying'
+    
+                if (result === "Cyberbullying") {
+                    container.classList.add("cyberbullying");
+                    resultText.classList.add("cyberbullying");
+                    resultText.textContent = "Cyberbullying Detected";
+                } else if (result === "Not Cyberbullying") {
+                    container.classList.add("non-cyberbullying");
+                    resultText.classList.add("non-cyberbullying");
+                    resultText.textContent = "Not Cyberbullying";
+                } else {
+                    resultText.textContent = "No prediction available yet. Enter text and click Predict.";
+                }
+            }, 1000); // Simulated 1-second delay for demo
         });
     </script>
+    
+    
 </body>
 </html>
