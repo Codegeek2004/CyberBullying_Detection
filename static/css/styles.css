@@ -1,119 +1,87 @@
-/* Reset some default styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Body styles */
+/* General body styling */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    background-color: black; /* Black background for the whole page */
+    color: white; /* White text color */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    transition: background-color 0.3s ease; /* Smooth transition for background change */
 }
 
-/* Main container for content */
-.container {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-    padding: 30px;
+/* Header Styling */
+h1 {
     text-align: center;
-    transition: box-shadow 0.3s ease; /* Smooth transition for box-shadow change */
+    color: #00ff00; /* Light green color for the heading */
+    font-size: 36px;
+    margin-bottom: 30px;
 }
 
-/* Cyberbullying detected styles */
-body.cyberbullying {
-    background-color: #ffcccc; /* Red background for cyberbullying */
+/* Container to hold form and result */
+.container {
+    text-align: center;
+    width: 60%;
+    background-color: rgba(0, 0, 0, 0.7); /* Slight transparency for background */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 255, 0, 0.4);
 }
 
-.container.cyberbullying {
-    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.7); /* Red shadow for cyberbullying */
-}
-
-/* Non-cyberbullying styles */
-body.non-cyberbullying {
-    background-color: #ccffcc; /* Green background for non-cyberbullying */
-}
-
-.container.non-cyberbullying {
-    box-shadow: 0 4px 10px rgba(0, 128, 0, 0.7); /* Green shadow for non-cyberbullying */
-}
-
-/* Title styling */
-.title {
-    font-size: 3em;
+/* Form styling */
+form {
     margin-bottom: 20px;
-    color: #333;
 }
 
-/* Label styling */
-.label {
-    font-size: 1.5em;
-    color: #555;
-    margin-bottom: 10px;
-    display: block;
+label {
+    font-size: 18px;
+    margin-right: 10px;
 }
 
-/* Input field styling */
-.input-field {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    font-size: 1.2em;
-    color: #333;
-    transition: border 0.3s ease;
-}
-
-/* Focus effect for input field */
-.input-field:focus {
-    border-color: #3498db;
-    outline: none;
-}
-
-/* Submit button styling */
-.submit-btn {
-    background-color: #3498db;
-    color: white;
-    padding: 12px 20px;
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
     border: none;
-    border-radius: 8px;
-    font-size: 1.3em;
+    width: 60%;
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #00ff00;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-/* Submit button hover effect */
-.submit-btn:hover {
-    background-color: #2980b9;
+button:hover {
+    background-color: #007f00; /* Darker green on hover */
 }
 
-/* Result section styling */
-.result {
+/* Result container styling */
+#result-container {
+    display: none;
     margin-top: 20px;
-    font-size: 1.4em;
-    color: #333;
-    transition: color 0.3s ease; /* Smooth transition for color change */
 }
 
-.result.cyberbullying {
-    color: red; /* Red text for cyberbullying result */
+.result {
+    font-size: 20px;
 }
 
-.result.non-cyberbullying {
-    color: green; /* Green text for non-cyberbullying result */
+.result.red {
+    color: #ff0000; /* Red for Cyberbullying */
 }
 
-.result h2 {
-    margin-bottom: 10px;
-    color: #3498db;
+.result.green {
+    color: #00ff00; /* Green for Not Cyberbullying */
+}
+
+/* Error Message Styling */
+.error {
+    color: red;
+    font-size: 18px;
+    margin-top: 10px;
 }
